@@ -3,13 +3,44 @@ import pandas as pd
 from datetime import datetime, timedelta
 import logging
 import json
+import time
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+CACHE_TTL_SECONDS = 300  # 5 minutes
+
 class APIAgent:
     def __init__(self):
-        self.cache = {}
+        self.cache = {}          # symbol -> DataFrame
+        self.cache_time = {}     # symbol -> timestamp
+
+    def _is_cache_valid(self, symbol):
+        """Return True if the cached data for symbol is still fresh."""
+        if symbol not in self.cache_time:
+            return False
+        age = time.time() - self.cache_time[symbol]
+        return age < CACHE_TTL_SECONDS
+
+    def _fetch_with_retry(self, symbol, start_date, end_date, retries=3, backoff=2):
+        """Fetch ticker history with exponential backoff on rate-limit errors."""
+        for attempt in range(1, retries + 1):
+            try:
+                ticker = yf.Ticker(symbol)
+                hist = ticker.history(start=start_date, end=end_date)
+                return hist
+            except Exception as e:
+                err_str = str(e)
+                if "Too Many Requests" in err_str or "Rate limit" in err_str.lower():
+                    wait = backoff ** attempt
+                    logger.warning(
+                        f"Rate limited on {symbol} (attempt {attempt}/{retries}). "
+                        f"Retrying in {wait}s..."
+                    )
+                    time.sleep(wait)
+                else:
+                    raise  # non-rate-limit errors bubble up immediately
+        raise Exception(f"Too Many Requests after {retries} retries for {symbol}")
 
     def get_market_data(self, symbols, start_date=None, end_date=None):
         """
@@ -37,24 +68,28 @@ class APIAgent:
             
             for symbol in symbols:
                 try:
-                    if symbol not in self.cache:
-                        logger.info(f"Fetching data for {symbol}...")
-                        ticker = yf.Ticker(symbol)
-                        hist = ticker.history(start=start_date, end=end_date)
-                        
-                        if hist.empty:
-                            logger.warning(f"No data returned for {symbol}")
-                            failed_symbols.append(symbol)
-                            continue
-                        
-                        # Reset index to make the date a column for easier serialization
-                        hist = hist.reset_index()
-                        hist['Date'] = hist['Date'].astype(str)
-                        self.cache[symbol] = hist
-                        logger.info(f"Successfully cached {symbol}: {len(hist)} rows")
-                    
+                    if self._is_cache_valid(symbol):
+                        logger.info(f"Using cached data for {symbol}")
+                        data[symbol] = self.cache[symbol]
+                        continue
+
+                    logger.info(f"Fetching data for {symbol}...")
+                    hist = self._fetch_with_retry(symbol, start_date, end_date)
+
+                    if hist.empty:
+                        logger.warning(f"No data returned for {symbol}")
+                        failed_symbols.append(symbol)
+                        continue
+
+                    # Reset index to make the date a column for easier serialization
+                    hist = hist.reset_index()
+                    hist['Date'] = hist['Date'].astype(str)
+                    self.cache[symbol] = hist
+                    self.cache_time[symbol] = time.time()
+                    logger.info(f"Successfully cached {symbol}: {len(hist)} rows")
+
                     data[symbol] = self.cache[symbol]
-                    
+
                 except Exception as e:
                     logger.error(f"Error fetching data for {symbol}: {str(e)}")
                     failed_symbols.append(symbol)

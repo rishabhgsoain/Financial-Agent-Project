@@ -1,391 +1,259 @@
-# Multi-Agent AI Finance Assistant
+# 💰 Financial Agent Project
 
-![Python](https://img.shields.io/badge/python-3.10+-blue.svg)
-![License](https://img.shields.io/badge/license-MIT-blue.svg)
-![Last Commit](https://img.shields.io/github/last-commit/vansh-121/Multi-Agent-AI-Finance-Assistant)
-![Forks](https://img.shields.io/github/forks/vansh-121/Multi-Agent-AI-Finance-Assistant?style=social)
-![Stars](https://img.shields.io/github/stars/vansh-121/Multi-Agent-AI-Finance-Assistant?style=social)
-![Streamlit](https://img.shields.io/badge/Streamlit-Enabled-red?logo=streamlit)
-![FastAPI](https://img.shields.io/badge/FastAPI-Backend-green?logo=fastapi)
-![Docker](https://img.shields.io/badge/Docker-Ready-blue?logo=docker)
-![Status](https://img.shields.io/badge/status-active-green.svg)
-
-## Overview
-
-The **Multi-Agent AI Finance Assistant** is an open-source platform designed to provide intelligent financial analysis and decision-making support using a multi-agent AI framework. Leveraging large language models (Google Gemini) and advanced financial algorithms, this project enables users to perform tasks such as equity research, market forecasting, portfolio optimization, risk assessment, and earnings predictions. The system employs a modular, agent-based architecture where specialized AI agents collaborate to deliver precise and actionable financial insights.
-
-**Key Capabilities:**
-- 📊 **460+ Global Stocks**: Coverage of US, Asian, European markets, ETFs, and cryptocurrencies
-- 🤖 **AI-Powered Analysis**: Multi-agent system with specialized financial agents
-- 📈 **Earnings Predictions**: ML-based earnings forecasting with visualization
-- 📰 **Real-time News**: Automated news scraping and analysis
-- 🎯 **Risk Assessment**: Portfolio exposure and risk analysis
-- 📉 **Interactive Charts**: Stock comparisons, growth trends, and performance metrics
-
-This project is ideal for financial analysts, developers, and researchers looking to harness AI for financial applications. It demonstrates the power of multi-agent systems in tackling complex, real-world financial challenges.
+![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
+![Google Gemini](https://img.shields.io/badge/Google%20Gemini-4285F4?style=for-the-badge&logo=google&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
 
 ---
 
-## 🚀 Live Demo (Beta)
+## 🤔 What Is This?
 
-✅ **LIVE & RUNNING:** [multi-agent-ai-finance-assistant.streamlit.app](https://multi-agents-finance-assistant.streamlit.app)
+Ever wished you had a team of financial analysts working for you 24/7 — but without the crazy salary bill? That's basically what this project is.
 
-The application is now **fully deployed** with:
-- ✅ Streamlit frontend running smoothly
-- ✅ FastAPI backend operational and synchronized
-- ✅ Real-time market data integration
-- ✅ AI-powered analysis with Google Gemini
-- ✅ Interactive charts and visualizations
+**Financial Agent Project** is a multi-agent AI system that breaks down complex financial tasks into specialized agents, each doing one thing really well. One agent pulls live market data, another scrapes the news, another does risk analysis — and they all talk to each other to give you a clear, comprehensive picture of the market.
+
+It's powered by **Google Gemini**, connected to **Yahoo Finance**, and ships with a clean **Streamlit dashboard** that you can actually use without being a finance PhD.
+
+> **TL;DR:** Ask it about any stock, get back a full AI-generated market analysis with charts, risk assessment, and earnings predictions.
 
 ---
 
-## 📋 Recent Updates (v2.0.0)
+## ✨ What Can It Do?
 
-**✨ Major improvements:**
-- Fixed dependency conflicts (matplotlib, google-generativeai added)
-- Synchronized code across app.py, orchestrator, and streamlit_app
-- Enhanced error handling with safe type conversions
-- Improved comparison table with real market data calculations
-- Better fallback mechanisms for API rate limits
+- 📊 **460+ Global Stocks** — covers US markets, Asia (Korea, Japan, India, Hong Kong), Europe, 98 ETFs, and 20+ cryptocurrencies
+- 🤖 **Multi-Agent AI** — specialized agents collaborate like a real research team
+- 📈 **Earnings Predictions** — uses machine learning (polynomial regression) to forecast future earnings
+- 📰 **Live News** — scrapes financial news automatically and feeds it into the analysis
+- 🎯 **Risk Assessment** — calculates your portfolio's exposure and highlights concentration risk
+- 📉 **Interactive Charts** — compare stocks side-by-side with real charts, not just raw numbers
+- 🎤 **Voice I/O** — yes, you can actually talk to it
 
-**⚠️ Important Notes for Cloud Deployment:**
+---
 
-Due to potential limitations on cloud platforms (Streamlit Cloud, Render, etc.), you may experience:
-- **Render timeout issues**: Long-running queries or Streamlit Cloud sleep mode
-- **Free trial limitations**: Resource constraints on free tier services
-- **Gemini API rate limits**: 50 requests/day on free tier may be exhausted
-- **Slow response times**: Cold starts and limited server resources
+## 🧠 How the Agents Work Together
 
-**🎯 Recommended:** For the best experience with full functionality, **run locally**:
+Think of it like a small research firm where everyone has a specific job:
+
+```
+You ask a question
+        │
+        ▼
+┌─────────────────────────┐
+│   FastAPI Orchestrator   │  ← The "manager" who routes your request
+└────────────┬────────────┘
+             │
+     ┌───────┼───────────────────────────┐
+     ▼       ▼         ▼        ▼        ▼
+  📡 API  📰 News   🔍 RAG   📊 Risk  💬 Gemini
+  Agent   Agent    Agent    Agent     Agent
+  (data)  (news)  (search) (analyze)  (write)
+             │
+             ▼
+    📱 Streamlit Dashboard
+    (your beautiful results)
+```
+
+| Agent | What It Does |
+|-------|-------------|
+| **API Agent** | Grabs real-time stock data from Yahoo Finance with smart caching & retry logic |
+| **Scraping Agent** | Fetches financial news from the web using newspaper3k and BeautifulSoup |
+| **Retriever Agent** | Searches through documents using FAISS vector similarity (RAG) |
+| **Language Agent** | The writer — uses Google Gemini to turn raw data into readable analysis |
+| **Analysis Agent** | Calculates portfolio risk, weights, and exposure |
+| **Prediction Agent** | Forecasts future earnings using scikit-learn regression models |
+| **Graphing Agent** | Builds the charts and comparison visuals using matplotlib |
+| **Voice Agent** | Handles speech input/output with SpeechRecognition + gTTS |
+
+---
+
+## 🚀 Getting Started
+
+### What You Need First
+
+- Python 3.10+
+- A **Google Gemini API key** — it's free, grab one at [ai.google.dev](https://ai.google.dev/)
+- Git
+
+### Step-by-Step Setup
+
+**1. Clone the repo**
 ```bash
-# Terminal 1 - Start FastAPI Backend
+git clone https://github.com/rishabhgsoain/Financial-Agent-Project.git
+cd Financial-Agent-Project
+```
+
+**2. Create a virtual environment** (keeps your global Python clean)
+```bash
+python -m venv venv
+source venv/bin/activate      # Mac/Linux
+# venv\Scripts\activate       # Windows
+```
+
+**3. Install dependencies**
+```bash
+pip install -r requirements.txt
+```
+
+**4. Set up your API key**
+
+Copy the example env file and fill in your Gemini key:
+```bash
+cp .env.example .env
+```
+
+Open `.env` and set:
+```
+GEMINI_API_KEY="your-key-here"
+```
+
+**5. Run it!**
+```bash
+streamlit run app.py
+```
+
+Open your browser at **http://localhost:8501** and you're good to go 🎉
+
+---
+
+## 🏃 Running Modes
+
+### Option A — Simple Mode (Recommended for local use)
+Everything runs together in one command:
+```bash
+streamlit run app.py
+```
+
+### Option B — Separated Mode (Better for production)
+Run the backend and frontend separately for more control:
+
+```bash
+# Terminal 1 — Start the API backend
 uvicorn orchestrator.orchestrator:app --host 0.0.0.0 --port 8000
 
-# Terminal 2 - Start Streamlit Frontend
+# Terminal 2 — Start the frontend
 streamlit run streamlit_app/app.py
 ```
 
-Local deployment eliminates timeouts, rate limits, and resource constraints. See [Installation](#installation) section below.
+- App: http://localhost:8501
+- API docs (Swagger): http://localhost:8000/docs
+
+### Option C — Docker
+```bash
+docker build -t financial-agent .
+docker run -p 8501:8501 -p 8000:8000 --env-file .env financial-agent
+```
 
 ---
 
+## 💬 Example Queries
 
+Once the app is running, try things like:
 
-## Key Features
-
-- **Multi-Agent Collaboration**: Specialized agents (API Agent, Scraping Agent, Retriever Agent, Analysis Agent, Language Agent, Prediction Agent, Graphing Agent, Voice Agent) work together to process financial data and provide comprehensive insights.
-- **LLM-Powered Analysis**: Integrates Google Gemini (gemini-2.0-flash-exp, gemini-2.5-pro) for natural language understanding and financial reasoning with intelligent fallback mechanisms.
-- **Financial Data Integration**: 
-  - Real-time market data via Yahoo Finance API
-  - 460+ stocks from major global exchanges (US, Korea, Japan, Hong Kong, India, UK, Germany, France, Switzerland, Canada, Australia)
-  - 98 ETFs covering various sectors and strategies
-  - 20+ cryptocurrencies including Bitcoin, Ethereum, and major altcoins
-- **Advanced Analytics**:
-  - Portfolio risk exposure analysis with customizable weights
-  - ML-based earnings predictions using polynomial regression
-  - Year-over-year growth trend forecasting
-  - Historical vs predicted earnings visualization
-- **Interactive Visualizations**:
-  - Side-by-side stock comparison charts
-  - Normalized price performance tracking
-  - Volume analysis and trading patterns
-  - Combined earnings and growth analysis
-- **Intelligent Stock Selection**:
-  - Browse by category (Tech Giants, Banking, Semiconductors, etc.)
-  - Search by company name or symbol
-  - Custom symbol entry for any Yahoo Finance ticker
-- **Report Generation**: Automatically generates professional market briefs with real Yahoo Finance data and AI analysis.
-- **Extensible Architecture**: Modular design allows easy addition of new agents or data sources.
-- **Multiple Deployment Options**: Run as combined app or separated frontend/backend architecture.
+- *"Analyze AAPL, MSFT, and GOOGL — what's the current market trend?"*
+- *"Compare Samsung (005930.KS) and TSMC performance over the last month"*
+- *"What's the risk exposure in a portfolio of BTC-USD, ETH-USD, and AAPL?"*
+- *"Show me the earnings prediction for Tesla"*
+- *"Summarize the latest news for NVDA"*
 
 ---
 
+## 📁 Project Structure
+
+```
+Financial-Agent-Project/
+│
+├── app.py                       # Combined app entry point (FastAPI + Streamlit)
+├── requirements.txt             # All Python dependencies
+├── .env.example                 # Template for your environment variables
+├── Dockerfile                   # Docker configuration
+│
+├── agents/                      # All AI agents live here
+│   ├── analysis_agent.py        # Portfolio risk & exposure analysis
+│   ├── language_agent.py        # Gemini-powered text generation
+│   ├── retriever_agent.py       # FAISS-based document retrieval (RAG)
+│   ├── simple_retriever_agent.py
+│   └── voice_agent.py           # Speech input/output
+│
+├── data_ingestion/              # Data collection layer
+│   ├── api_agent.py             # Yahoo Finance data fetching (with caching)
+│   └── scrapping_agent.py       # Financial news scraping
+│
+├── orchestrator/                # FastAPI backend
+│   └── orchestrator.py          # Routes requests & coordinates agents
+│
+├── streamlit_app/               # Streamlit frontend
+└── docs/                        # Additional documentation
+```
+
 ---
-## 📸 Screenshots
 
-### 🧠 Home Dashboard with Stock Selection
-![Home Dashboard](screenshots/home_dashboard.png)
-*Select from 460+ global stocks across categories or search by name/symbol*
+## ⚠️ API Rate Limits (Good to Know)
 
-### 📊 Market Brief Analysis
-![Generated Result](screenshots/generated_result.png)
-*AI-powered market analysis with portfolio risk assessment and earnings data*
+Google Gemini free tier is generous but has limits:
 
-### 📈 Stock Comparison Charts
-![Stock Comparison](screenshots/stocks_comparison.png)
-*Side-by-side comparison with price trends, volume analysis, and performance metrics*
+| Model | Requests/min | Requests/day |
+|-------|-------------|-------------|
+| `gemini-2.0-flash-exp` | 10 | 1,500 |
+| `gemini-2.5-pro` | — | 50 |
 
-### 📉 Earnings & Growth Trend Analysis
-![Graphs Analysis](screenshots/Graphs_analysis.png)
-*Historical vs predicted earnings with ML-based forecasting and growth trends*
-
-
+**Tips to stretch your quota:**
+- Use `gemini-2.0-flash-exp` for most queries (much higher daily limit)
+- The app automatically falls back to a structured template if you hit rate limits, so it never completely breaks
+- For serious or production use, consider upgrading at [ai.google.dev/pricing](https://ai.google.dev/pricing)
 
 ---
 
 ## 🧰 Tech Stack
 
-- **Frontend:** Streamlit + Interactive Charts (Matplotlib) + Stock Selection UI
-- **Backend:** FastAPI (RESTful Microservices Architecture)
-- **Data Sources:** 
-  - Yahoo Finance API (yfinance) for real-time market data
-  - BeautifulSoup & Newspaper3k for news scraping
-- **AI/ML:**
-  - Google Gemini (gemini-2.0-flash-exp, gemini-2.5-pro) via google-generativeai
-  - LangChain for RAG implementation
-  - Scikit-learn for earnings prediction (polynomial regression)
-  - FAISS for vector similarity search
-- **Data Processing:** Pandas, NumPy for financial data analysis
-- **Voice I/O:** SpeechRecognition + gTTS for voice interactions
-- **Deployment:** 
-  - Single-file deployment (app.py) for combined FastAPI + Streamlit
-  - Separated deployment (orchestrator + streamlit_app) for scalability
-  - Docker-ready with multi-stage builds
-  - Render/Streamlit Cloud compatible
+| Layer | Technology |
+|-------|-----------|
+| **Frontend** | Streamlit |
+| **Backend** | FastAPI |
+| **AI / LLM** | Google Gemini (gemini-2.0-flash-exp, gemini-2.5-pro) |
+| **Market Data** | Yahoo Finance via `yfinance` |
+| **NLP / RAG** | LangChain + FAISS vector store |
+| **ML** | scikit-learn (polynomial regression for earnings forecasting) |
+| **Charts** | Matplotlib |
+| **News Scraping** | newspaper3k + BeautifulSoup |
+| **Voice** | SpeechRecognition + gTTS |
+| **Data Processing** | Pandas + NumPy |
+| **Deployment** | Docker / Streamlit Cloud / Render |
 
 ---
 
-## 🧪 AI Agents Overview
+## 🤝 Contributing
 
-| Agent            | Role                                               | Technology |
-|------------------|----------------------------------------------------|------------|
-| **API Agent** (`api_agent.py`) | Fetches real-time market data from Yahoo Finance, handles data serialization | yfinance, pandas |
-| **Scraping Agent** (`scrapping_agent.py`) | Scrapes financial news with intelligent fallback mechanisms | newspaper3k, BeautifulSoup |
-| **Retriever Agent** (`retriever_agent.py`) | Implements RAG with FAISS vector store for document retrieval | LangChain, FAISS |
-| **Language Agent** (`language_agent.py`) | Generates market briefs using Google Gemini with fallback handling | google-generativeai, Gemini 2.0/2.5 |
-| **Analysis Agent** (`analysis_agent.py`) | Calculates portfolio risk exposure and performs statistical analysis | pandas, NumPy |
-| **Prediction Agent** (`prediction_agent.py`) | Forecasts earnings and growth rates using ML regression | scikit-learn, NumPy |
-| **Graphing Agent** (`graphing_agent.py`) | Creates interactive visualizations and comparison charts | matplotlib, pandas |
-| **Voice Agent** (`voice_agent.py`) | Handles speech-to-text and text-to-speech interactions | SpeechRecognition, gTTS |
-| **Simple Retriever Agent** (`simple_retriever_agent.py`) | Lightweight retrieval for quick queries | Custom implementation |
+Want to add a new agent, improve an existing one, or fix a bug? Contributions are very welcome!
+
+1. Fork this repo
+2. Create a new branch: `git checkout -b feature/my-new-feature`
+3. Make your changes and test them locally
+4. Commit with a clear message: `git commit -m "Add: my new feature"`
+5. Push and open a Pull Request
+
+For big changes, please open an issue first so we can talk through the approach before you spend a lot of time on it.
 
 ---
 
+## 📄 License
 
-## Project Motivation
-
-The financial industry demands rapid, accurate, and data-driven decisions. Traditional tools often struggle with the volume and complexity of financial data. This project addresses these challenges by deploying a multi-agent AI system that combines domain expertise with cutting-edge AI technologies, inspired by platforms like FinRobot.
-
-## Installation
-
-### Prerequisites
-- Python 3.10 or higher
-- Git
-- Google Gemini API key (Get it free from [Google AI Studio](https://ai.google.dev/))
-- Optional: Docker for containerized deployment
-
-### Setup
-
-1. **Clone the Repository**:
-   ```bash
-   git clone https://github.com/vansh-121/Multi-Agent-AI-Finance-Assistant.git
-   cd Multi-Agent-AI-Finance-Assistant
-   ```
-
-2. **Create a Virtual Environment**:
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   ```
-
-3. **Install Dependencies**:
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-4. **Configure API Keys**:
-   Create a `.env` file in the root directory:
-   ```bash
-   GEMINI_API_KEY="your-gemini-api-key-here"
-   ```
-   Get your free API key from: https://ai.google.dev/
-
-### Running the Application
-
-#### Option 1: Combined Mode (Single File - Recommended for Local Development)
-Run both FastAPI backend and Streamlit frontend together:
-```bash
-streamlit run app.py
-```
-Access the app at: http://localhost:8501
-
-#### Option 2: Separated Mode (Production Deployment)
-
-**Terminal 1 - Start FastAPI Backend:**
-```bash
-uvicorn orchestrator.orchestrator:app --host 0.0.0.0 --port 8000
-```
-
-**Terminal 2 - Start Streamlit Frontend:**
-```bash
-streamlit run streamlit_app/app.py
-```
-
-Access the app at: http://localhost:8501  
-API docs available at: http://localhost:8000/docs
-
-#### Option 3: Docker Deployment
-```bash
-docker build -t finance-assistant .
-docker run -p 8501:8501 -p 8000:8000 --env-file .env finance-assistant
-```
-
-### Usage Examples
-
-1. **Browse by Category**: Select from Tech Giants, Banking, Semiconductors, etc.
-2. **Search Stocks**: Type "Apple" or "TSLA" to find specific stocks
-3. **Custom Symbols**: Enter any Yahoo Finance ticker (e.g., `AAPL, MSFT, TSM`)
-4. **Ask Questions**: 
-   - "Analyze AAPL, MSFT, and GOOGL. What's the market trend?"
-   - "Compare Samsung (005930.KS) and TSMC performance"
-   - "What's the risk exposure in my crypto portfolio?"
-
-### Available Stock Coverage
-
-- **248 US Stocks**: Major tech, finance, healthcare, retail, energy companies
-- **49 Asian Stocks**: Korea (.KS), Japan (.T), Hong Kong (.HK), India (.NS)
-- **40 European Stocks**: UK (.L), Germany (.DE), France (.PA), Switzerland (.SW)
-- **98 ETFs**: Sector, index, and thematic ETFs
-- **20 Cryptocurrencies**: BTC-USD, ETH-USD, and major altcoins
-## 🆕 Latest Features
-
-### Earnings Prediction & Visualization
-- **ML-Based Forecasting**: Polynomial regression models predict future earnings
-- **Growth Trend Analysis**: Year-over-year growth rate predictions
-- **Interactive Charts**: Historical vs predicted earnings visualization
-- **Comparison Tables**: Side-by-side metrics for multiple stocks
-
-### Enhanced Stock Selection
-- **460+ Global Stocks**: Comprehensive coverage across all major markets
-- **Smart Search**: Find stocks by company name or symbol
-- **Category Browsing**: Organized by sector and market
-- **Custom Symbols**: Support for any Yahoo Finance ticker
-
-### Intelligent Fallback System
-- **Rate Limit Handling**: Automatic fallback when API limits are reached
-- **Rich Fallback Data**: Market data enriched analysis even when news scraping fails
-- **Graceful Degradation**: Always provides meaningful results
-
-### API Features
-- **RESTful Endpoints**: Clean API design with FastAPI
-- **Health Checks**: Monitor system status at `/`
-- **Debug Tools**: Test scraping at `/debug/test-scraping`
-- **CORS Enabled**: Ready for frontend integration
-
-## ⚠️ API Rate Limits
-
-**Google Gemini Free Tier Limits:**
-- `gemini-2.0-flash-exp`: 10 requests/min, 1500 requests/day
-- `gemini-2.5-pro`: 50 requests/day
-
-**Recommendations:**
-1. Use `gemini-2.0-flash-exp` for high-frequency queries
-2. Create multiple Google Cloud projects for extended quotas
-3. Upgrade to paid tier for production use: https://ai.google.dev/pricing
-4. System has intelligent fallback to ensure continuous operation
-
-## 🏗️ Architecture
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│                     Streamlit Frontend                       │
-│  (Stock Selection, Query Input, Visualization)              │
-└────────────────────────┬────────────────────────────────────┘
-                         │ HTTP/REST
-                         ▼
-┌─────────────────────────────────────────────────────────────┐
-│                   FastAPI Orchestrator                       │
-│              (Routes & Coordinates Agents)                   │
-└───┬─────────┬─────────┬─────────┬─────────┬────────┬───────┘
-    │         │         │         │         │        │
-    ▼         ▼         ▼         ▼         ▼        ▼
-┌────────┐ ┌────────┐ ┌────────┐ ┌────────┐ ┌────────┐ ┌────────┐
-│  API   │ │Scraping│ │Retriever│ │Analysis│ │Language│ │Prediction│
-│ Agent  │ │ Agent  │ │ Agent   │ │ Agent  │ │ Agent  │ │  Agent   │
-└────────┘ └────────┘ └────────┘ └────────┘ └────────┘ └────────┘
-    │         │         │         │         │        │
-    ▼         ▼         ▼         ▼         ▼        ▼
-┌────────┐ ┌────────┐ ┌────────┐ ┌────────┐ ┌────────┐ ┌────────┐
-│ Yahoo  │ │  Web   │ │ FAISS  │ │ NumPy  │ │ Gemini │ │Sklearn │
-│Finance │ │Scraping│ │  DB    │ │ Stats  │ │  LLM   │ │   ML   │
-└────────┘ └────────┘ └────────┘ └────────┘ └────────┘ └────────┘
-```
-
-## ✅ Deployment Status
-
-### ✨ Latest Status (v2.0.0 - November 23, 2025)
-
-**✅ PRODUCTION READY**
-
-The application is now **fully operational** with:
-
-| Component | Status | Details |
-|-----------|--------|---------|
-| **Streamlit Frontend** | ✅ Running | Interactive UI with 460+ stocks |
-| **FastAPI Backend** | ✅ Running | Orchestrator handling all AI agents |
-| **Market Data (Yahoo Finance)** | ✅ Active | Real-time stock data integration |
-| **AI Analysis (Google Gemini)** | ✅ Active | gemini-2.0-flash-exp, gemini-2.5-pro |
-| **Charts & Visualization** | ✅ Working | Comparison charts, earnings trends |
-| **Earnings Predictions** | ✅ Working | ML-based forecasting with sklearn |
-| **News Scraping** | ✅ Working | With intelligent fallback system |
-
-### ⚠️ Cloud Deployment Considerations
-
-When running on **Streamlit Cloud, Render, or similar free tier services**, you may encounter:
-
-**Potential Issues:**
-- 🕐 **Render/Server Timeouts**: 30-second timeout on Render free tier may cut off long-running queries
-- 💤 **Streamlit Cloud Sleep**: App goes to sleep after inactivity, causing slow startup
-- 📊 **Gemini API Rate Limits**: Free tier has 50 requests/day limit (may be shared if using same API key)
-- 🔌 **Connection Timeouts**: Intermittent connection issues due to resource constraints
-- ⚡ **Slow Response Times**: Cold starts and limited server CPU/RAM
-
-**Solutions:**
-1. **🏠 Run Locally** (RECOMMENDED) - Eliminates all timeout and resource issues
-2. **💳 Upgrade to Paid Tier** - Render hobby plan or Streamlit+ for better resources
-3. **🔑 Get Higher API Quotas** - Upgrade Google Gemini from free to paid tier
-4. **📝 Use Multiple API Keys** - Rotate through different Google Cloud projects
-
-**👉 For best results: Clone and run locally following the [Installation](#installation) section**
-
-### Recent Fixes (v2.0.0)
-- ✅ Added missing `matplotlib` and `google-generativeai` dependencies
-- ✅ Fixed protobuf version conflicts with streamlit and other packages
-- ✅ Resolved unsafe float conversions in comparison metrics
-- ✅ Enhanced market data table with real calculations
-- ✅ Synchronized code across all three app versions
-- ✅ Improved error handling and fallback mechanisms
+This project is under the **MIT License** — you're free to use it, modify it, and build on top of it. See [LICENSE](LICENSE) for the full text.
 
 ---
 
----
+## 🙏 Thanks To
 
-Contributions are welcome! Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
+These open-source tools made this whole thing possible:
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## 📝 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- Yahoo Finance for providing real-time market data
-- Google Gemini for powerful AI capabilities
-- LangChain for RAG implementation framework
-- Streamlit for the beautiful UI framework
-- FastAPI for the high-performance backend
-
-## 📧 Contact
-
-For questions or feedback, reach out to Vansh at vansh.sethi98760@gmail.com or open an issue on GitHub.
+- [Yahoo Finance](https://finance.yahoo.com/) for the market data
+- [Google Gemini](https://ai.google.dev/) for the AI backbone
+- [LangChain](https://www.langchain.com/) for the RAG framework
+- [Streamlit](https://streamlit.io/) for making dashboards fun to build
+- [FastAPI](https://fastapi.tiangolo.com/) for the blazing-fast backend
 
 ---
 
-**⭐ If you find this project helpful, please consider giving it a star on GitHub!**
-      
-     
+*If this project helped you or you find it interesting, a ⭐ on GitHub goes a long way — it helps others find it too!*
